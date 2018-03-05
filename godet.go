@@ -403,7 +403,7 @@ func (remote *RemoteDebugger) sendMessages() {
 
 func permanentError(err error) bool {
 	if websocket.IsUnexpectedCloseError(err) {
-		log.Println("unexpected close error")
+		// log.Println("unexpected close error")
 		return true
 	}
 
@@ -436,8 +436,10 @@ loop:
 					continue // one more check for remote.closed
 				}
 
-				if permanentError(err) {
+				if !websocket.IsUnexpectedCloseError(err) {
 					log.Println("read message:", err)
+				}
+				if permanentError(err) {
 					break loop
 				}
 			} else {
