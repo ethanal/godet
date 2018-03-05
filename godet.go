@@ -436,8 +436,8 @@ loop:
 					continue // one more check for remote.closed
 				}
 
-				log.Println("read message:", err)
 				if permanentError(err) {
+					log.Println("read message:", err)
 					break loop
 				}
 			} else {
