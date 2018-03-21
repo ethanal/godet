@@ -436,7 +436,7 @@ loop:
 					continue // one more check for remote.closed
 				}
 
-				if !websocket.IsUnexpectedCloseError(err) {
+				if permanentError(err) && !websocket.IsUnexpectedCloseError(err) {
 					log.Println("read message:", err)
 				}
 				if permanentError(err) {
@@ -509,7 +509,7 @@ func (remote *RemoteDebugger) processEvents() {
 			if err := json.Unmarshal(ev.Params, &params); err != nil {
 				log.Println("unmarshal", string(ev.Params), len(ev.Params), err)
 			} else {
-				cb(params)
+				go cb(params)
 			}
 		}
 	}
